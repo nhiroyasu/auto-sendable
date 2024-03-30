@@ -1,7 +1,7 @@
 # auto-sendable
 This is a refactoring tool that adds the Sendable protocol to structs and enums.
 
-# Examples
+# Example
 ## Before
 
 ```swift
@@ -41,6 +41,11 @@ open struct Obj: Sendable {
         }
     }
 }
+```
+
+# Usage
+```sh
+swift run auto-sendable <dir_path_or_file_path_1> <dir_path_or_file_path_2>  ...
 ```
 
 # Warning
