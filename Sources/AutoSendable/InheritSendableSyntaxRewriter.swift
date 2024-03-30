@@ -14,7 +14,7 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
     }
 
     override func visit(_ node: EnumDeclSyntax) -> DeclSyntax {
-        guard isOpenOrPublicStruct(node) else {
+        guard isOpenOrPublicEnum(node) else {
             return DeclSyntax(node)
         }
         guard isNotInheritedSendable(node) else {
@@ -30,7 +30,7 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
         decl.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) || $0.name.tokenKind == .keyword(.open) })
     }
 
-    private func isOpenOrPublicStruct(_ decl: EnumDeclSyntax) -> Bool {
+    private func isOpenOrPublicEnum(_ decl: EnumDeclSyntax) -> Bool {
         decl.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) || $0.name.tokenKind == .keyword(.open) })
     }
 
