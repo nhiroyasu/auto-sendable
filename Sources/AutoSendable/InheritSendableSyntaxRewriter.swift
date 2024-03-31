@@ -20,28 +20,6 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
 
     // MARK: - internal
 
-    private func isPublicStruct(_ decl: StructDeclSyntax) -> Bool {
-        decl.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) })
-    }
-
-    private func isPublicEnum(_ decl: EnumDeclSyntax) -> Bool {
-        decl.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) })
-    }
-
-    private func isNotInheritedSendable(_ decl: StructDeclSyntax) -> Bool {
-        decl.inheritanceClause?.inheritedTypes.allSatisfy {
-            $0.type.as(IdentifierTypeSyntax.self)?.name.text != "Sendable" &&
-            $0.type.as(AttributedTypeSyntax.self)?.baseType.as(IdentifierTypeSyntax.self)?.name.text != "Sendable"
-        } ?? true
-    }
-
-    private func isNotInheritedSendable(_ decl: EnumDeclSyntax) -> Bool {
-        decl.inheritanceClause?.inheritedTypes.allSatisfy {
-            $0.type.as(IdentifierTypeSyntax.self)?.name.text != "Sendable" &&
-            $0.type.as(AttributedTypeSyntax.self)?.baseType.as(IdentifierTypeSyntax.self)?.name.text != "Sendable"
-        } ?? true
-    }
-
     private func inheritSendable(_ decl: StructDeclSyntax) -> StructDeclSyntax {
         let nestSendableDecl = decl.with(\.memberBlock, recursiveInheritSendable(for: decl.memberBlock))
         // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
@@ -119,6 +97,28 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
     private func recursiveInheritSendable(for memberBlockSyntax: MemberBlockSyntax) -> MemberBlockSyntax {
         let newMemberBlockSyntax = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(memberBlockSyntax)
         return MemberBlockSyntax(newMemberBlockSyntax)!
+    }
+    
+    private func isPublicStruct(_ decl: StructDeclSyntax) -> Bool {
+        decl.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) })
+    }
+
+    private func isPublicEnum(_ decl: EnumDeclSyntax) -> Bool {
+        decl.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) })
+    }
+
+    private func isNotInheritedSendable(_ decl: StructDeclSyntax) -> Bool {
+        decl.inheritanceClause?.inheritedTypes.allSatisfy {
+            $0.type.as(IdentifierTypeSyntax.self)?.name.text != "Sendable" &&
+            $0.type.as(AttributedTypeSyntax.self)?.baseType.as(IdentifierTypeSyntax.self)?.name.text != "Sendable"
+        } ?? true
+    }
+
+    private func isNotInheritedSendable(_ decl: EnumDeclSyntax) -> Bool {
+        decl.inheritanceClause?.inheritedTypes.allSatisfy {
+            $0.type.as(IdentifierTypeSyntax.self)?.name.text != "Sendable" &&
+            $0.type.as(AttributedTypeSyntax.self)?.baseType.as(IdentifierTypeSyntax.self)?.name.text != "Sendable"
+        } ?? true
     }
 
     private func addSendableToInheritanceClause(
