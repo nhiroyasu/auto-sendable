@@ -29,10 +29,10 @@ class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
         }
         
         if let inheritanceClause = nestSendableDecl.inheritanceClause {
-            let suffixInheritedTypes = arrangeTriviaForSendable(currentInheritedTypes: inheritanceClause.inheritedTypes)
-            let sendableType = factoryUncheckedSendableSyntax(forwardSyntax: inheritanceClause.inheritedTypes.last)
+            let prefixInheritedTypes = arrangeTriviaForSendable(currentInheritedTypes: inheritanceClause.inheritedTypes)
+            let sendableType = factoryUncheckedSendableSyntax(previousSyntax: inheritanceClause.inheritedTypes.last)
             let newInheritedTypes = InheritedTypeListBuilder.buildFinalResult(
-                InheritedTypeListBuilder.buildBlock(suffixInheritedTypes + [sendableType])
+                InheritedTypeListBuilder.buildBlock(prefixInheritedTypes + [sendableType])
             )
             let newSyntax = nestSendableDecl
                 .with(\.inheritanceClause, InheritanceClauseSyntax(
@@ -41,7 +41,7 @@ class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
                 ))
             return newSyntax
         } else {
-            let sendableType = factoryUncheckedSendableSyntax(forwardSyntax: nestSendableDecl.name)
+            let sendableType = factoryUncheckedSendableSyntax(previousSyntax: nestSendableDecl.name)
             let newInheritedTypes = InheritedTypeListBuilder.buildFinalResult(
                 InheritedTypeListBuilder.buildBlock([sendableType])
             )
@@ -115,7 +115,7 @@ class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
         }
     }
 
-    private func factoryUncheckedSendableSyntax(forwardSyntax: SyntaxProtocol?) -> InheritedTypeSyntax {
+    private func factoryUncheckedSendableSyntax(previousSyntax: SyntaxProtocol?) -> InheritedTypeSyntax {
         let attributes = AttributeListBuilder.buildFinalResult(
             AttributeListBuilder.buildBlock(
                 AttributeListBuilder.buildExpression(
@@ -140,9 +140,9 @@ class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
             trailingTrivia: nil
         )
         return InheritedTypeSyntax(
-            leadingTrivia: forwardSyntax?.leadingTrivia ?? [],
+            leadingTrivia: previousSyntax?.leadingTrivia ?? [],
             type: attributedType,
-            trailingTrivia: forwardSyntax?.trailingTrivia ?? []
+            trailingTrivia: previousSyntax?.trailingTrivia ?? []
         )
     }
 }

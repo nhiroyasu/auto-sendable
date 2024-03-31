@@ -55,7 +55,7 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
 
         if let inheritanceClause = nestSendableDecl.inheritanceClause {
             let suffixInheritedTypes = arrangeTriviaForSendable(currentInheritedTypes: inheritanceClause.inheritedTypes)
-            let sendableType = factorySendableSyntax(forwardSyntax: inheritanceClause.inheritedTypes.last)
+            let sendableType = factorySendableSyntax(previousSyntax: inheritanceClause.inheritedTypes.last)
             let newInheritedTypes = InheritedTypeListBuilder.buildFinalResult(
                 InheritedTypeListBuilder.buildBlock(suffixInheritedTypes + [sendableType])
             )
@@ -66,7 +66,7 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
                 ))
             return newSyntax
         } else {
-            let sendableType = factorySendableSyntax(forwardSyntax: nestSendableDecl.name)
+            let sendableType = factorySendableSyntax(previousSyntax: nestSendableDecl.name)
             let newInheritedTypes = InheritedTypeListBuilder.buildFinalResult(
                 InheritedTypeListBuilder.buildBlock([sendableType])
             )
@@ -92,10 +92,10 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
         }
 
         if let inheritanceClause = nestSendableDecl.inheritanceClause {
-            let suffixInheritedTypes = arrangeTriviaForSendable(currentInheritedTypes: inheritanceClause.inheritedTypes)
-            let sendableType = factorySendableSyntax(forwardSyntax: inheritanceClause.inheritedTypes.last)
+            let prefixInheritedTypes = arrangeTriviaForSendable(currentInheritedTypes: inheritanceClause.inheritedTypes)
+            let sendableType = factorySendableSyntax(previousSyntax: inheritanceClause.inheritedTypes.last)
             let newInheritedTypes = InheritedTypeListBuilder.buildFinalResult(
-                InheritedTypeListBuilder.buildBlock(suffixInheritedTypes + [sendableType])
+                InheritedTypeListBuilder.buildBlock(prefixInheritedTypes + [sendableType])
             )
             let newSyntax = nestSendableDecl
                 .with(\.inheritanceClause, InheritanceClauseSyntax(
@@ -104,7 +104,7 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
                 ))
             return newSyntax
         } else {
-            let sendableType = factorySendableSyntax(forwardSyntax: nestSendableDecl.name)
+            let sendableType = factorySendableSyntax(previousSyntax: nestSendableDecl.name)
             let newInheritedTypes = InheritedTypeListBuilder.buildFinalResult(
                 InheritedTypeListBuilder.buildBlock([sendableType])
             )
@@ -164,13 +164,13 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
         }
     }
 
-    private func factorySendableSyntax(forwardSyntax: SyntaxProtocol?) -> InheritedTypeSyntax {
+    private func factorySendableSyntax(previousSyntax: SyntaxProtocol?) -> InheritedTypeSyntax {
         InheritedTypeSyntax(
             type: IdentifierTypeSyntax(
                 name: .identifier(
                     "Sendable",
-                    leadingTrivia: forwardSyntax?.leadingTrivia ?? [],
-                    trailingTrivia: forwardSyntax?.trailingTrivia ?? []
+                    leadingTrivia: previousSyntax?.leadingTrivia ?? [],
+                    trailingTrivia: previousSyntax?.trailingTrivia ?? []
                 )
             )
         )
