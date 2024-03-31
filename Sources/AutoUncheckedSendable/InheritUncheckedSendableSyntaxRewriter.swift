@@ -22,7 +22,7 @@ class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
     
     private func inheritUncheckedSendable(_ decl: ClassDeclSyntax) -> ClassDeclSyntax {
         let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritUncheckedSendable(for: decl.memberBlock.members))
-        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+        // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
         
         guard isNotInheritedSendable(nestSendableDecl) else {
             return nestSendableDecl
@@ -57,21 +57,21 @@ class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
     
     private func checkNestDecl(_ decl: StructDeclSyntax) -> StructDeclSyntax {
         let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritUncheckedSendable(for: decl.memberBlock.members))
-        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+        // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
         
         return nestSendableDecl
     }
     
     private func checkNestDecl(_ decl: EnumDeclSyntax) -> EnumDeclSyntax {
         let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritUncheckedSendable(for: decl.memberBlock.members))
-        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+        // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
         
         return nestSendableDecl
     }
 
     private func checkNestDecl(_ decl: ActorDeclSyntax) -> ActorDeclSyntax {
         let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritUncheckedSendable(for: decl.memberBlock.members))
-        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+        // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
         
         return nestSendableDecl
     }

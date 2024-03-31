@@ -44,7 +44,7 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
 
     private func inheritSendable(_ decl: StructDeclSyntax) -> StructDeclSyntax {
         let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritSendable(for: decl.memberBlock.members))
-        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+        // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
 
         guard isOpenOrPublicStruct(nestSendableDecl) else {
             return nestSendableDecl
@@ -82,7 +82,7 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
 
     private func inheritSendable(_ decl: EnumDeclSyntax) -> EnumDeclSyntax {
         let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritSendable(for: decl.memberBlock.members))
-        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+        // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
 
         guard isOpenOrPublicEnum(nestSendableDecl) else {
             return nestSendableDecl
@@ -120,14 +120,14 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
 
     private func checkNestDecl(_ decl: ClassDeclSyntax) -> ClassDeclSyntax {
         let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritSendable(for: decl.memberBlock.members))
-        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+        // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
 
         return nestSendableDecl
     }
 
     private func checkNestDecl(_ decl: ActorDeclSyntax) -> ActorDeclSyntax {
         let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritSendable(for: decl.memberBlock.members))
-        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+        // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
 
         return nestSendableDecl
     }
