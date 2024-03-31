@@ -160,13 +160,11 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
 
     private func factorySendableSyntax(previousSyntax: SyntaxProtocol?) -> InheritedTypeSyntax {
         InheritedTypeSyntax(
+            leadingTrivia: previousSyntax?.leadingTrivia ?? [],
             type: IdentifierTypeSyntax(
-                name: .identifier(
-                    "Sendable",
-                    leadingTrivia: previousSyntax?.leadingTrivia ?? [],
-                    trailingTrivia: previousSyntax?.trailingTrivia ?? []
-                )
-            )
+                name: .identifier("Sendable")
+            ),
+            trailingTrivia: previousSyntax?.trailingTrivia ?? []
         )
     }
 }
