@@ -14,7 +14,7 @@ swift run auto-unchecked-sendable <dir_path_or_file_path_1> <dir_path_or_file_pa
 
 
 # Example
-## `auto-sendable` command
+## `auto-sendable`
 ### Before
 ```swift
 open struct Obj {
@@ -55,7 +55,7 @@ open struct Obj: Sendable {
 }
 ```
 
-## `auto-unchecked-sendable` command
+## `auto-unchecked-sendable`
 ### Before
 
 ```swift
