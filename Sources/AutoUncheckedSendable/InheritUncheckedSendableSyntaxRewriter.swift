@@ -25,7 +25,7 @@ public class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
     // MARK: - internal
     
     private func inheritUncheckedSendable(_ decl: ClassDeclSyntax) -> ClassDeclSyntax {
-        let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritUncheckedSendable(for: decl.memberBlock.members))
+        let nestSendableDecl = decl.with(\.memberBlock, recursiveInheritUncheckedSendable(for: decl.memberBlock))
         // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
         
         guard isNotInheritedSendable(nestSendableDecl) else {
@@ -33,70 +33,48 @@ public class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
         }
         
         if let inheritanceClause = nestSendableDecl.inheritanceClause {
-            let prefixInheritedTypes = arrangeTriviaForSendable(currentInheritedTypes: inheritanceClause.inheritedTypes)
-            let sendableType = factoryUncheckedSendableSyntax(previousSyntax: inheritanceClause.inheritedTypes.last)
-            let newInheritedTypes = InheritedTypeListBuilder.buildFinalResult(
-                InheritedTypeListBuilder.buildBlock(prefixInheritedTypes + [sendableType])
+            let newInheritanceClause = addSendableToInheritanceClause(
+                currentInheritanceClause: inheritanceClause,
+                sendableSyntax: factoryUncheckedSendableSyntax(previousSyntax: inheritanceClause.inheritedTypes.last)
             )
             let newSyntax = nestSendableDecl
-                .with(\.inheritanceClause, InheritanceClauseSyntax(
-                    colon: inheritanceClause.colon,
-                    inheritedTypes: newInheritedTypes
-                ))
+                .with(\.inheritanceClause, newInheritanceClause)
             return newSyntax
         } else {
-            let sendableType = factoryUncheckedSendableSyntax(previousSyntax: nestSendableDecl.name)
-            let newInheritedTypes = InheritedTypeListBuilder.buildFinalResult(
-                InheritedTypeListBuilder.buildBlock([sendableType])
+            let newInheritanceClause = buildInheritanceClauseWithSendable(
+                sendableSyntax: factoryUncheckedSendableSyntax(previousSyntax: nestSendableDecl.name)
             )
             let newSyntax = nestSendableDecl
-                .with(\.inheritanceClause, InheritanceClauseSyntax(
-                    colon: .colonToken(trailingTrivia: [.spaces(1)]),
-                    inheritedTypes: newInheritedTypes
-                ))
+                .with(\.inheritanceClause, newInheritanceClause)
                 .with(\.name.trailingTrivia, [])
             return newSyntax
         }
     }
     
     private func checkNestDecl(_ decl: StructDeclSyntax) -> StructDeclSyntax {
-        let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritUncheckedSendable(for: decl.memberBlock.members))
+        let nestSendableDecl = decl.with(\.memberBlock, recursiveInheritUncheckedSendable(for: decl.memberBlock))
         // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
         
         return nestSendableDecl
     }
     
     private func checkNestDecl(_ decl: EnumDeclSyntax) -> EnumDeclSyntax {
-        let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritUncheckedSendable(for: decl.memberBlock.members))
+        let nestSendableDecl = decl.with(\.memberBlock, recursiveInheritUncheckedSendable(for: decl.memberBlock))
         // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
         
         return nestSendableDecl
     }
 
     private func checkNestDecl(_ decl: ActorDeclSyntax) -> ActorDeclSyntax {
-        let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritUncheckedSendable(for: decl.memberBlock.members))
+        let nestSendableDecl = decl.with(\.memberBlock, recursiveInheritUncheckedSendable(for: decl.memberBlock))
         // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
         
         return nestSendableDecl
     }
     
-    private func recursiveInheritUncheckedSendable(for memberBlockList: MemberBlockItemListSyntax) -> MemberBlockItemListSyntax {
-        let nestSendableMembers = memberBlockList.map {
-            if let structSyntax = $0.decl.as(StructDeclSyntax.self) {
-                return MemberBlockItemListBuilder.buildExpression(checkNestDecl(structSyntax))
-            } else if let enumSyntax = $0.decl.as(EnumDeclSyntax.self) {
-                return MemberBlockItemListBuilder.buildExpression(checkNestDecl(enumSyntax))
-            } else if let classSyntax = $0.decl.as(ClassDeclSyntax.self) {
-                return MemberBlockItemListBuilder.buildExpression(inheritUncheckedSendable(classSyntax))
-            } else if let actorSyntax = $0.decl.as(ActorDeclSyntax.self) {
-                return MemberBlockItemListBuilder.buildExpression(checkNestDecl(actorSyntax))
-            } else {
-                return MemberBlockItemListBuilder.buildExpression($0)
-            }
-        }
-        return MemberBlockItemListBuilder.buildFinalResult(
-           MemberBlockItemListBuilder.buildArray(nestSendableMembers)
-        )
+    private func recursiveInheritUncheckedSendable(for memberBlockSyntax: MemberBlockSyntax) -> MemberBlockSyntax {
+        let newMemberBlockSyntax = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(memberBlockSyntax)
+        return MemberBlockSyntax(newMemberBlockSyntax)!
     }
 
     private func isNotInheritedSendable(_ decl: ClassDeclSyntax) -> Bool {
@@ -104,6 +82,30 @@ public class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
             $0.type.as(IdentifierTypeSyntax.self)?.name.text != "Sendable" &&
             $0.type.as(AttributedTypeSyntax.self)?.baseType.as(IdentifierTypeSyntax.self)?.name.text != "Sendable"
         } ?? true
+    }
+
+    private func addSendableToInheritanceClause(
+        currentInheritanceClause inheritanceClause: InheritanceClauseSyntax,
+        sendableSyntax: InheritedTypeSyntax
+    ) -> InheritanceClauseSyntax {
+        let prefixInheritedTypes = arrangeTriviaForSendable(currentInheritedTypes: inheritanceClause.inheritedTypes)
+        let newInheritedTypes = InheritedTypeListBuilder.buildFinalResult(
+            InheritedTypeListBuilder.buildBlock(prefixInheritedTypes + [sendableSyntax])
+        )
+        return InheritanceClauseSyntax(
+            colon: inheritanceClause.colon,
+            inheritedTypes: newInheritedTypes
+        )
+    }
+
+    private func buildInheritanceClauseWithSendable(sendableSyntax: InheritedTypeSyntax) -> InheritanceClauseSyntax {
+        let newInheritedTypes = InheritedTypeListBuilder.buildFinalResult(
+            InheritedTypeListBuilder.buildBlock([sendableSyntax])
+        )
+        return InheritanceClauseSyntax(
+            colon: .colonToken(trailingTrivia: [.spaces(1)]),
+            inheritedTypes: newInheritedTypes
+        )
     }
 
     private func arrangeTriviaForSendable(currentInheritedTypes inheritedTypes: InheritedTypeListSyntax) -> [InheritedTypeListSyntax.Element] {
