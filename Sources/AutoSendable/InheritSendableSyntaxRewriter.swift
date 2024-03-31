@@ -98,7 +98,7 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
         let newMemberBlockSyntax = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(memberBlockSyntax)
         return MemberBlockSyntax(newMemberBlockSyntax)!
     }
-    
+
     private func isPublicStruct(_ decl: StructDeclSyntax) -> Bool {
         decl.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) })
     }
