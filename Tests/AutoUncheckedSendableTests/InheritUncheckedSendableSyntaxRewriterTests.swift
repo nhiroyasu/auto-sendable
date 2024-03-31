@@ -278,4 +278,99 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
         XCTAssertEqual(result, expectedOutput)
     }
+
+    func testNestedInheritSendable() {
+        let source = """
+        open class Obj {
+            public class Obj2 {
+                public class Obj3 {
+                    public class Obj4 {}
+                    public class Obj41 {}
+                    public class Obj42 {}
+                    public class Obj43 {}
+                }
+            }
+            public class Obj5: Equatable, Codable {
+                public class Obj6: Equatable,
+                                  Codable {
+                    public class Obj7<Value>: Collection where Value == Int {
+                        typealias Element = Value
+                    }
+                }
+            }
+        }
+        """
+        let expectedOutput = """
+        open class Obj: @unchecked Sendable {
+            public class Obj2: @unchecked Sendable {
+                public class Obj3: @unchecked Sendable {
+                    public class Obj4: @unchecked Sendable {}
+                    public class Obj41: @unchecked Sendable {}
+                    public class Obj42: @unchecked Sendable {}
+                    public class Obj43: @unchecked Sendable {}
+                }
+            }
+            public class Obj5: Equatable, Codable, @unchecked Sendable {
+                public class Obj6: Equatable,
+                                  Codable,
+                                  @unchecked Sendable {
+                    public class Obj7<Value>: Collection, @unchecked Sendable where Value == Int {
+                        typealias Element = Value
+                    }
+                }
+            }
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testExceptForClasses() {
+        let source = """
+        open struct Obj {
+            public enum Obj2 {
+                public enum Obj3 {
+                    public enum Obj4 {}
+                    public enum Obj41 {}
+                    public struct Obj42 {}
+                    public struct Obj43 {}
+                }
+            }
+            public enum Obj5: Equatable, Codable {
+                public enum Obj6: Equatable,
+                                  Codable {
+                    public struct Obj7<Value>: Collection where Value == Int {
+                        typealias Element = Value
+                    }
+                }
+            }
+        }
+        """
+        let expectedOutput = """
+        open struct Obj {
+            public enum Obj2 {
+                public enum Obj3 {
+                    public enum Obj4 {}
+                    public enum Obj41 {}
+                    public struct Obj42 {}
+                    public struct Obj43 {}
+                }
+            }
+            public enum Obj5: Equatable, Codable {
+                public enum Obj6: Equatable,
+                                  Codable {
+                    public struct Obj7<Value>: Collection where Value == Int {
+                        typealias Element = Value
+                    }
+                }
+            }
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
 }
