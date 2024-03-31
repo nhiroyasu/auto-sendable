@@ -2,6 +2,7 @@
 This is a refactoring tool that adds the Sendable protocol to structs and enums.
 
 # Usage
+## Swift Command
 Inherit `Sendable` for public structs and enums.
 ```sh
 swift run auto-sendable <dir_path_or_file_path_1> <dir_path_or_file_path_2>  ...
@@ -10,6 +11,29 @@ swift run auto-sendable <dir_path_or_file_path_1> <dir_path_or_file_path_2>  ...
 Inherit `@unchecked Sendable` for classes.
 ```sh
 swift run auto-unchecked-sendable <dir_path_or_file_path_1> <dir_path_or_file_path_2>  ...
+```
+
+## Package Plugin
+### Prepare
+Add the auto-sendable package to the list of dependencies in your Package.swift file.
+```swift
+let package = Package(
+    dependencies: [
+        .package(url: "https://github.com/nhiroyasu/auto-sendable", branch: "main"),
+    ],
+    ...
+)
+```
+
+### Execute
+Inherit `Sendable` for public structs and enums.
+```sh
+swift package plugin auto-sendable <dir_path_or_file_path_1> <dir_path_or_file_path_2>  ...
+```
+
+Inherit `@unchecked Sendable` for classes.
+```sh
+swift package plugin auto-unchecked-sendable <dir_path_or_file_path_1> <dir_path_or_file_path_2>  ...
 ```
 
 

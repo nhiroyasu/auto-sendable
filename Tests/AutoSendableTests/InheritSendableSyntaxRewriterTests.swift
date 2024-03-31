@@ -99,13 +99,13 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
 
     func testInheritSendable6() {
         let source = """
-        open struct Obj {
+        public struct Obj {
             typealias Element = Value
         }
         """
 
         let expectedOutput = """
-        open struct Obj: Sendable {
+        public struct Obj: Sendable {
             typealias Element = Value
         }
         """
@@ -185,7 +185,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
 
     func testNestedInheritSendable() {
         let source = """
-        open struct Obj {
+        public struct Obj {
             public struct Obj2 {
                 public struct Obj3 {
                     public struct Obj4 {}
@@ -205,7 +205,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
         let expectedOutput = """
-        open struct Obj: Sendable {
+        public struct Obj: Sendable {
             public struct Obj2: Sendable {
                 public struct Obj3: Sendable {
                     public struct Obj4: Sendable {}
@@ -281,7 +281,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
 
     func testNestedInheritSendableForEnum() {
         let source = """
-        open enum Obj {
+        public enum Obj {
             public enum Obj2 {
                 public enum Obj3 {
                     public enum Obj4 {}
@@ -301,7 +301,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
         let expectedOutput = """
-        open enum Obj: Sendable {
+        public enum Obj: Sendable {
             public enum Obj2: Sendable {
                 public enum Obj3: Sendable {
                     public enum Obj4: Sendable {}
@@ -354,7 +354,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
 
     func testNestedInheritSendableForEnumAndStruct() {
         let source = """
-        open struct Obj {
+        public struct Obj {
             public enum Obj2 {
                 public enum Obj3 {
                     public enum Obj4 {}
@@ -374,7 +374,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
         let expectedOutput = """
-        open struct Obj: Sendable {
+        public struct Obj: Sendable {
             public enum Obj2: Sendable {
                 public enum Obj3: Sendable {
                     public enum Obj4: Sendable {}

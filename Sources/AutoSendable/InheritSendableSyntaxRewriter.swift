@@ -20,12 +20,12 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
 
     // MARK: - internal
 
-    private func isOpenOrPublicStruct(_ decl: StructDeclSyntax) -> Bool {
-        decl.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) || $0.name.tokenKind == .keyword(.open) })
+    private func isPublicStruct(_ decl: StructDeclSyntax) -> Bool {
+        decl.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) })
     }
 
-    private func isOpenOrPublicEnum(_ decl: EnumDeclSyntax) -> Bool {
-        decl.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) || $0.name.tokenKind == .keyword(.open) })
+    private func isPublicEnum(_ decl: EnumDeclSyntax) -> Bool {
+        decl.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) })
     }
 
     private func isNotInheritedSendable(_ decl: StructDeclSyntax) -> Bool {
@@ -46,7 +46,7 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
         let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritSendable(for: decl.memberBlock.members))
         // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
 
-        guard isOpenOrPublicStruct(nestSendableDecl) else {
+        guard isPublicStruct(nestSendableDecl) else {
             return nestSendableDecl
         }
         guard isNotInheritedSendable(nestSendableDecl) else {
@@ -84,7 +84,7 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
         let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritSendable(for: decl.memberBlock.members))
         // NOTE: Please do not use `decl` from this point on. Use to `nestSendableDecl`
 
-        guard isOpenOrPublicEnum(nestSendableDecl) else {
+        guard isPublicEnum(nestSendableDecl) else {
             return nestSendableDecl
         }
         guard isNotInheritedSendable(nestSendableDecl) else {

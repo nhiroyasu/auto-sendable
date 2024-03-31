@@ -11,7 +11,8 @@ let package = Package(
     products: [
         .executable(name: "auto-sendable", targets: ["AutoSendable"]),
         .executable(name: "auto-unchecked-sendable", targets: ["AutoUncheckedSendable"]),
-        .plugin(name: "AutoSendablePlugin", targets: ["AutoSendablePlugin"])
+        .plugin(name: "AutoSendablePlugin", targets: ["AutoSendablePlugin"]),
+        .plugin(name: "AutoUncheckedSendablePlugin", targets: ["AutoUncheckedSendablePlugin"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -50,6 +51,19 @@ let package = Package(
                 ]
             ),
             dependencies: ["AutoSendable"]
+        ),
+        .plugin(
+            name: "AutoUncheckedSendablePlugin",
+            capability: .command(
+                intent: .custom(
+                    verb: "auto-unchecked-sendable",
+                    description: "Inherit @unchecked Sendable for classes."
+                ),
+                permissions: [
+                    .writeToPackageDirectory(reason: "This command write swift files that classes inherit @unchecked Sendable.")
+                ]
+            ),
+            dependencies: ["AutoUncheckedSendable"]
         ),
         .target(name: "Util"),
         .testTarget(
