@@ -14,7 +14,7 @@ swift run auto-unchecked-sendable <dir_path_or_file_path_1> <dir_path_or_file_pa
 
 
 # Example
-## auto-sendable
+## `auto-sendable` command
 ### Before
 ```swift
 open struct Obj {
@@ -55,7 +55,7 @@ open struct Obj: Sendable {
 }
 ```
 
-## auto-unchecked-sendable
+## `auto-unchecked-sendable` command
 ### Before
 
 ```swift
@@ -98,19 +98,6 @@ open class Obj: @unchecked Sendable {
 ```
 
 # Warning
-The `auto-sendable` command will add the Sendable protocol to structs and enums even if they cannot conform to Sendable (for example, if they contain a class that is not Sendable).  
-As a result, it is not possible to completely avoid warnings from the compiler.
-
-```swift
-public struct Obj: Sendable {  // warning: Obj struct isn't able to conform to the Sendable protocol.
-    var variable: Class
-}
-
-public class Class {
-    var count: Int
-}
-```
-
 The `auto-sendable` command will add the Sendable protocol to structs and enums even if they cannot conform to Sendable (for example, if they contain a class that is not Sendable).  
 As a result, it is not possible to completely avoid warnings from the compiler.
 
