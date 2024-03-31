@@ -1,20 +1,24 @@
 import SwiftSyntax
 import SwiftSyntaxBuilder
 
-class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
-    override func visit(_ node: ClassDeclSyntax) -> DeclSyntax {
+public class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
+    public override init(viewMode: SyntaxTreeViewMode) {
+        super.init(viewMode: viewMode)
+    }
+    
+    override public func visit(_ node: ClassDeclSyntax) -> DeclSyntax {
         return DeclSyntax(inheritUncheckedSendable(node))
     }
     
-    override func visit(_ node: StructDeclSyntax) -> DeclSyntax {
+    override public func visit(_ node: StructDeclSyntax) -> DeclSyntax {
         return DeclSyntax(checkNestDecl(node))
     }
     
-    override func visit(_ node: EnumDeclSyntax) -> DeclSyntax {
+    override public func visit(_ node: EnumDeclSyntax) -> DeclSyntax {
         return DeclSyntax(checkNestDecl(node))
     }
 
-    override func visit(_ node: ActorDeclSyntax) -> DeclSyntax {
+    override public func visit(_ node: ActorDeclSyntax) -> DeclSyntax {
         return DeclSyntax(checkNestDecl(node))
     }
     

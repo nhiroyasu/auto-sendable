@@ -9,8 +9,8 @@ let package = Package(
         .macOS(.v10_15)
     ],
     products: [
-        .executable(name: "auto-sendable", targets: ["AutoSendable"]),
-        .executable(name: "auto-unchecked-sendable", targets: ["AutoUncheckedSendable"]),
+        .executable(name: "auto-sendable", targets: ["AutoSendableExec"]),
+        .executable(name: "auto-unchecked-sendable", targets: ["AutoUncheckedSendableExec"]),
         .plugin(name: "AutoSendablePlugin", targets: ["AutoSendablePlugin"]),
         .plugin(name: "AutoUncheckedSendablePlugin", targets: ["AutoUncheckedSendablePlugin"])
     ],
@@ -22,6 +22,20 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .executableTarget(
+            name: "AutoSendableExec",
+            dependencies: [
+                .target(name: "AutoSendable"),
+                .target(name: "Util")
+            ]
+        ),
+        .executableTarget(
+            name: "AutoUncheckedSendableExec",
+            dependencies: [
+                .target(name: "AutoUncheckedSendable"),
+                .target(name: "Util")
+            ]
+        ),
+        .target(
             name: "AutoSendable",
             dependencies: [
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
@@ -30,7 +44,7 @@ let package = Package(
                 .target(name: "Util")
             ]
         ),
-        .executableTarget(
+        .target(
             name: "AutoUncheckedSendable",
             dependencies: [
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
@@ -50,7 +64,7 @@ let package = Package(
                     .writeToPackageDirectory(reason: "This command write swift files that structs and enums inherit Sendable.")
                 ]
             ),
-            dependencies: ["AutoSendable"]
+            dependencies: ["AutoSendableExec"]
         ),
         .plugin(
             name: "AutoUncheckedSendablePlugin",
@@ -63,7 +77,7 @@ let package = Package(
                     .writeToPackageDirectory(reason: "This command write swift files that classes inherit @unchecked Sendable.")
                 ]
             ),
-            dependencies: ["AutoUncheckedSendable"]
+            dependencies: ["AutoUncheckedSendableExec"]
         ),
         .target(name: "Util"),
         .testTarget(

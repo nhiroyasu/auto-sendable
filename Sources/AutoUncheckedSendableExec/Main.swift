@@ -1,5 +1,6 @@
 import Foundation
 import Util
+import AutoUncheckedSendable
 
 @main
 class Main {
@@ -9,7 +10,7 @@ class Main {
             return
         }
         let fileService = FileService()
-        let refactor = SwiftSendableRefactor()
+        let refactor = SwiftUncheckedSendableRefactor()
 
         let swiftFiles: Set<String> = CommandLine.arguments
             .dropFirst()
