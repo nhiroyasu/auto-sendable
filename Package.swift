@@ -10,7 +10,8 @@ let package = Package(
     ],
     products: [
         .executable(name: "auto-sendable", targets: ["AutoSendable"]),
-        .executable(name: "auto-unchecked-sendable", targets: ["AutoUncheckedSendable"])
+        .executable(name: "auto-unchecked-sendable", targets: ["AutoUncheckedSendable"]),
+        .plugin(name: "AutoSendablePlugin", targets: ["AutoSendablePlugin"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -36,6 +37,19 @@ let package = Package(
                 .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
                 .target(name: "Util")
             ]
+        ),
+        .plugin(
+            name: "AutoSendablePlugin",
+            capability: .command(
+                intent: .custom(
+                    verb: "auto-sendable",
+                    description: "Inherit Sendable for public structs and enums."
+                ),
+                permissions: [
+                    .writeToPackageDirectory(reason: "This command write swift files that structs and enums inherit Sendable.")
+                ]
+            ),
+            dependencies: ["AutoSendable"]
         ),
         .target(name: "Util"),
         .testTarget(
