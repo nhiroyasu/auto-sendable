@@ -33,7 +33,7 @@ public class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
         }
         
         if let inheritanceClause = nestSendableDecl.inheritanceClause {
-            let newInheritanceClause = addSendableToInheritanceClause(
+            let newInheritanceClause = addUncheckedSendableToInheritanceClause(
                 currentInheritanceClause: inheritanceClause,
                 sendableSyntax: factoryUncheckedSendableSyntax(previousSyntax: inheritanceClause.inheritedTypes.last)
             )
@@ -41,8 +41,8 @@ public class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
                 .with(\.inheritanceClause, newInheritanceClause)
             return newSyntax
         } else {
-            let newInheritanceClause = buildInheritanceClauseWithSendable(
-                sendableSyntax: factoryUncheckedSendableSyntax(previousSyntax: nestSendableDecl.name)
+            let newInheritanceClause = factoryInheritanceClause(
+                with: factoryUncheckedSendableSyntax(previousSyntax: nestSendableDecl.name)
             )
             let newSyntax = nestSendableDecl
                 .with(\.inheritanceClause, newInheritanceClause)
@@ -84,7 +84,7 @@ public class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
         } ?? true
     }
 
-    private func addSendableToInheritanceClause(
+    private func addUncheckedSendableToInheritanceClause(
         currentInheritanceClause inheritanceClause: InheritanceClauseSyntax,
         sendableSyntax: InheritedTypeSyntax
     ) -> InheritanceClauseSyntax {
@@ -98,7 +98,7 @@ public class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
         )
     }
 
-    private func buildInheritanceClauseWithSendable(sendableSyntax: InheritedTypeSyntax) -> InheritanceClauseSyntax {
+    private func factoryInheritanceClause(with sendableSyntax: InheritedTypeSyntax) -> InheritanceClauseSyntax {
         let newInheritedTypes = InheritedTypeListBuilder.buildFinalResult(
             InheritedTypeListBuilder.buildBlock([sendableSyntax])
         )

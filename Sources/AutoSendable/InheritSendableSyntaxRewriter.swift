@@ -62,8 +62,8 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
                 .with(\.inheritanceClause, newInheritanceClause)
             return newSyntax
         } else {
-            let newInheritanceClause = buildInheritanceClauseWithSendable(
-                sendableSyntax: factorySendableSyntax(previousSyntax: nestSendableDecl.name)
+            let newInheritanceClause = factoryInheritanceClause(
+                with: factorySendableSyntax(previousSyntax: nestSendableDecl.name)
             )
             let newSyntax = nestSendableDecl
                 .with(\.inheritanceClause, newInheritanceClause)
@@ -92,8 +92,8 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
                 .with(\.inheritanceClause, newInheritanceClause)
             return newSyntax
         } else {
-            let newInheritanceClause = buildInheritanceClauseWithSendable(
-                sendableSyntax: factorySendableSyntax(previousSyntax: nestSendableDecl.name)
+            let newInheritanceClause = factoryInheritanceClause(
+                with: factorySendableSyntax(previousSyntax: nestSendableDecl.name)
             )
             let newSyntax = nestSendableDecl
                 .with(\.inheritanceClause, newInheritanceClause)
@@ -135,7 +135,7 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
         )
     }
 
-    private func buildInheritanceClauseWithSendable(sendableSyntax: InheritedTypeSyntax) -> InheritanceClauseSyntax {
+    private func factoryInheritanceClause(with sendableSyntax: InheritedTypeSyntax) -> InheritanceClauseSyntax {
         let newInheritedTypes = InheritedTypeListBuilder.buildFinalResult(
             InheritedTypeListBuilder.buildBlock([sendableSyntax])
         )
