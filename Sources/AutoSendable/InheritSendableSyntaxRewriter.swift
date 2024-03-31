@@ -3,24 +3,10 @@ import SwiftSyntaxBuilder
 
 class InheritSendableSyntaxRewriter: SyntaxRewriter {
     override func visit(_ node: StructDeclSyntax) -> DeclSyntax {
-        guard isOpenOrPublicStruct(node) else {
-            return DeclSyntax(node)
-        }
-        guard isNotInheritedSendable(node) else {
-            return DeclSyntax(node)
-        }
-
         return DeclSyntax(inheritSendable(node))
     }
 
     override func visit(_ node: EnumDeclSyntax) -> DeclSyntax {
-        guard isOpenOrPublicEnum(node) else {
-            return DeclSyntax(node)
-        }
-        guard isNotInheritedSendable(node) else {
-            return DeclSyntax(node)
-        }
-
         return DeclSyntax(inheritSendable(node))
     }
 
@@ -58,6 +44,14 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
                 MemberBlockItemListBuilder.buildArray(nestSendableMembers)
              )
         )
+        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+
+        guard isOpenOrPublicStruct(nestSendableDecl) else {
+            return nestSendableDecl
+        }
+        guard isNotInheritedSendable(nestSendableDecl) else {
+            return nestSendableDecl
+        }
 
         if let inheritanceClause = nestSendableDecl.inheritanceClause {
             let suffixInheritedTypes = arrangeTriviaForSendable(currentInheritedTypes: inheritanceClause.inheritedTypes)
@@ -102,6 +96,14 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
                 MemberBlockItemListBuilder.buildArray(nestSendableMembers)
              )
         )
+        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+
+        guard isOpenOrPublicEnum(nestSendableDecl) else {
+            return nestSendableDecl
+        }
+        guard isNotInheritedSendable(nestSendableDecl) else {
+            return nestSendableDecl
+        }
 
         if let inheritanceClause = nestSendableDecl.inheritanceClause {
             let suffixInheritedTypes = arrangeTriviaForSendable(currentInheritedTypes: inheritanceClause.inheritedTypes)

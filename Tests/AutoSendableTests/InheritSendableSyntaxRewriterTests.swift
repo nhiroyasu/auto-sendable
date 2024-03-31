@@ -141,6 +141,26 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         XCTAssertEqual(result, expectedOutput)
     }
 
+    func testInheritSendable8() {
+        let source = """
+        public struct Obj
+        {
+            let name: String
+        }
+        """
+
+        let expectedOutput = """
+        public struct Obj: Sendable
+        {
+            let name: String
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
+
     func testNestedInheritSendable() {
         let source = """
         open struct Obj {
@@ -181,6 +201,54 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
                     }
                 }
             }
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testNestedInheritSendable2() {
+        let source = """
+        public struct Obj {
+            public struct Ojb2: Sendable {
+                public struct Ojb3: Sendable {}
+            }
+            public struct Ojb21: Sendable {}
+        }
+        """
+
+        let expectedOutput = """
+        public struct Obj: Sendable {
+            public struct Ojb2: Sendable {
+                public struct Ojb3: Sendable {}
+            }
+            public struct Ojb21: Sendable {}
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testNestedInheritSendable3() {
+        let source = """
+        public struct Obj: Sendable {
+            public struct Ojb2 {
+                public struct Ojb3: Sendable {}
+            }
+            public struct Ojb21 {}
+        }
+        """
+
+        let expectedOutput = """
+        public struct Obj: Sendable {
+            public struct Ojb2: Sendable {
+                public struct Ojb3: Sendable {}
+            }
+            public struct Ojb21: Sendable {}
         }
         """
 
@@ -236,6 +304,31 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         let result = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
         XCTAssertEqual(result, expectedOutput)
     }
+
+    func testNestedInheritSendableForEnum2() {
+        let source = """
+        public enum Obj: Sendable {
+            public enum Ojb2 {
+                public enum Ojb3: Sendable {}
+            }
+            public enum Ojb21 {}
+        }
+        """
+
+        let expectedOutput = """
+        public enum Obj: Sendable {
+            public enum Ojb2: Sendable {
+                public enum Ojb3: Sendable {}
+            }
+            public enum Ojb21: Sendable {}
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
+
 
     func testNestedInheritSendableForEnumAndStruct() {
         let source = """
@@ -361,6 +454,30 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
                 struct Ojb3: Sendable {}
             }
             struct Ojb21: Sendable {}
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testAlreadyInheritSendable3() {
+        let source = """
+        public struct Obj {
+            public struct Ojb2: Sendable {
+                public struct Ojb3: Sendable {}
+            }
+            public struct Ojb21: Sendable {}
+        }
+        """
+
+        let expectedOutput = """
+        public struct Obj: Sendable {
+            public struct Ojb2: Sendable {
+                public struct Ojb3: Sendable {}
+            }
+            public struct Ojb21: Sendable {}
         }
         """
 
