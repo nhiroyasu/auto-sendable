@@ -14,9 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "auto-sendable"
-               BuildableName = "auto-sendable"
-               BlueprintName = "auto-sendable"
+               BlueprintIdentifier = "AutoSendable"
+               BuildableName = "AutoSendable"
+               BlueprintName = "AutoSendable"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AutoSendableTests"
+               BuildableName = "AutoSendableTests"
+               BlueprintName = "AutoSendableTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,13 +40,8 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
-      <TestPlans>
-         <TestPlanReference
-            reference = "container:.swiftpm/auto-sendable.xctestplan"
-            default = "YES">
-         </TestPlanReference>
-      </TestPlans>
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -41,16 +50,6 @@
                BlueprintIdentifier = "AutoSendableTests"
                BuildableName = "AutoSendableTests"
                BlueprintName = "AutoSendableTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AutoUncheckedSendableTests"
-               BuildableName = "AutoUncheckedSendableTests"
-               BlueprintName = "AutoUncheckedSendableTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
@@ -70,18 +69,12 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "auto-sendable"
-            BuildableName = "auto-sendable"
-            BlueprintName = "auto-sendable"
+            BlueprintIdentifier = "AutoSendable"
+            BuildableName = "AutoSendable"
+            BlueprintName = "AutoSendable"
             ReferencedContainer = "container:">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "/Users/niitsumahiroyasu/playgrounds/auto-sendable-experiment-data"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -93,9 +86,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "auto-sendable"
-            BuildableName = "auto-sendable"
-            BlueprintName = "auto-sendable"
+            BlueprintIdentifier = "AutoSendable"
+            BuildableName = "AutoSendable"
+            BlueprintName = "AutoSendable"
             ReferencedContainer = "container:">
          </BuildableReference>
       </BuildableProductRunnable>

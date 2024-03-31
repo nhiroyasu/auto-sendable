@@ -9,7 +9,8 @@ let package = Package(
         .macOS(.v10_15)
     ],
     products: [
-        .executable(name: "auto-sendable", targets: ["AutoSendable"])
+        .executable(name: "auto-sendable", targets: ["AutoSendable"]),
+        .executable(name: "auto-unchecked-sendable", targets: ["AutoUncheckedSendable"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -24,11 +25,26 @@ let package = Package(
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftParser", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+                .target(name: "Util")
             ]
         ),
+        .executableTarget(
+            name: "AutoUncheckedSendable",
+            dependencies: [
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
+                .product(name: "SwiftParser", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+                .target(name: "Util")
+            ]
+        ),
+        .target(name: "Util"),
         .testTarget(
           name: "AutoSendableTests",
           dependencies: ["AutoSendable"]
-        )
+        ),
+        .testTarget(
+          name: "AutoUncheckedSendableTests",
+          dependencies: ["AutoUncheckedSendable"]
+        ),
     ]
 )

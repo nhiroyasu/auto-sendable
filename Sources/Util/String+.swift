@@ -1,6 +1,6 @@
 import Foundation
 
-extension String {
+public extension String {
     func ensureTrailingSlash() -> String {
         if !self.hasSuffix("/") {
             return self + "/"

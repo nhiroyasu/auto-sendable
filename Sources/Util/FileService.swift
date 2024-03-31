@@ -1,7 +1,9 @@
 import Foundation
 
-class FileService {
-    func findSwiftFiles(in path: String) -> Set<String> {
+public class FileService {
+    public init() {}
+    
+    public func findSwiftFiles(in path: String) -> Set<String> {
         var swiftFiles: Set<String> = []
         do {
             let attribute = try FileManager.default.attributesOfItem(atPath: path)
@@ -30,7 +32,7 @@ class FileService {
         return swiftFiles
     }
 
-    func write(source: String, at path: String) throws {
+    public func write(source: String, at path: String) throws {
         try source.write(to: URL(fileURLWithPath: path), atomically: true, encoding: .utf8)
     }
 }

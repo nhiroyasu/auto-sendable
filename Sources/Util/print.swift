@@ -1,4 +1,4 @@
-func printColoredText(
+public func printColoredText(
     _ text: String,
     colorCode: String
 ) {

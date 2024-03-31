@@ -1,6 +1,5 @@
 @testable import AutoSendable
 import SwiftParser
-import Foundation
 import XCTest
 
 class InheritSendableSyntaxRewriterTests: XCTestCase {
@@ -151,6 +150,29 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
 
         let expectedOutput = """
         public struct Obj: Sendable
+        {
+            let name: String
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testInheritSendable9() {
+        let source = """
+        public struct Obj:
+            Codable
+        {
+            let name: String
+        }
+        """
+
+        let expectedOutput = """
+        public struct Obj:
+            Codable,
+            Sendable
         {
             let name: String
         }
@@ -478,6 +500,24 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
                 public struct Ojb3: Sendable {}
             }
             public struct Ojb21: Sendable {}
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testAlreadyInheritSendable4() {
+        let source = """
+        public struct Obj: @unchecked Sendable {
+            public struct Ojb2: Sendable {}
+        }
+        """
+
+        let expectedOutput = """
+        public struct Obj: @unchecked Sendable {
+            public struct Ojb2: Sendable {}
         }
         """
 

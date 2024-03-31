@@ -21,11 +21,17 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
     }
 
     private func isNotInheritedSendable(_ decl: StructDeclSyntax) -> Bool {
-        decl.inheritanceClause?.inheritedTypes.allSatisfy { $0.type.as(IdentifierTypeSyntax.self)?.name.text != "Sendable" } ?? true
+        decl.inheritanceClause?.inheritedTypes.allSatisfy {
+            $0.type.as(IdentifierTypeSyntax.self)?.name.text != "Sendable" &&
+            $0.type.as(AttributedTypeSyntax.self)?.baseType.as(IdentifierTypeSyntax.self)?.name.text != "Sendable"
+        } ?? true
     }
 
     private func isNotInheritedSendable(_ decl: EnumDeclSyntax) -> Bool {
-        decl.inheritanceClause?.inheritedTypes.allSatisfy { $0.type.as(IdentifierTypeSyntax.self)?.name.text != "Sendable" } ?? true
+        decl.inheritanceClause?.inheritedTypes.allSatisfy {
+            $0.type.as(IdentifierTypeSyntax.self)?.name.text != "Sendable" &&
+            $0.type.as(AttributedTypeSyntax.self)?.baseType.as(IdentifierTypeSyntax.self)?.name.text != "Sendable"
+        } ?? true
     }
 
     private func inheritSendable(_ decl: StructDeclSyntax) -> StructDeclSyntax {
@@ -134,10 +140,10 @@ class InheritSendableSyntaxRewriter: SyntaxRewriter {
 
     private func arrangeTriviaForSendable(currentInheritedTypes inheritedTypes: InheritedTypeListSyntax) -> [InheritedTypeListSyntax.Element] {
         inheritedTypes.map { syntax in
-            let forwardCommaTrailingTrivia = inheritedTypes.compactMap { $0.trailingComma }.first?.trailingTrivia
+            let previousTrailingTrivia = syntax.previousToken(viewMode: .all)?.trailingTrivia
             if syntax == inheritedTypes.last {
                 return syntax
-                    .with(\.trailingComma, .commaToken(trailingTrivia: forwardCommaTrailingTrivia ?? [.spaces(1)]))
+                    .with(\.trailingComma, .commaToken(trailingTrivia: previousTrailingTrivia ?? [.spaces(1)]))
                     .with(\.type.trailingTrivia, [])
             } else {
                 return syntax

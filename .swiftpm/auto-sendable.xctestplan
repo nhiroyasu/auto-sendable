@@ -1,0 +1,33 @@
+{
+  "configurations" : [
+    {
+      "id" : "3748D7F9-FE61-49F9-8D11-820D15628D1A",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "\/Users\/niitsumahiroyasu\/playgrounds\/auto-sendable-experiment-data"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:",
+      "identifier" : "auto-sendable",
+      "name" : "auto-sendable"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "AutoSendableTests",
+        "name" : "AutoSendableTests"
+      }
+    }
+  ],
+  "version" : 1
+}

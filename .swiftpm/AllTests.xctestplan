@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "70556A2C-7D30-4772-AD6C-46CE6FBE3ED9",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "AutoSendableTests",
+        "name" : "AutoSendableTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "AutoUncheckedSendableTests",
+        "name" : "AutoUncheckedSendableTests"
+      }
+    }
+  ],
+  "version" : 1
+}
