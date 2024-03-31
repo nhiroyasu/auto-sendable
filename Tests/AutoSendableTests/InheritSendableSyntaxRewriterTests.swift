@@ -525,4 +525,72 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         let result = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
         XCTAssertEqual(result, expectedOutput)
     }
+
+    func testNestClass() {
+        let source = """
+        public class Obj {
+            public struct Ojb2 {
+                public class Class21 {
+                    public struct Obj211 {}
+                }
+            }
+
+            public class Obj3 {
+                public struct Obj4 {}
+            }
+        }
+        """
+
+        let expectedOutput = """
+        public class Obj {
+            public struct Ojb2: Sendable {
+                public class Class21 {
+                    public struct Obj211: Sendable {}
+                }
+            }
+
+            public class Obj3 {
+                public struct Obj4: Sendable {}
+            }
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testNestActor() {
+        let source = """
+        public actor Obj {
+            public struct Ojb2 {
+                public actor Class21 {
+                    public struct Obj211 {}
+                }
+            }
+
+            public actor Obj3 {
+                public struct Obj4 {}
+            }
+        }
+        """
+
+        let expectedOutput = """
+        public actor Obj {
+            public struct Ojb2: Sendable {
+                public actor Class21 {
+                    public struct Obj211: Sendable {}
+                }
+            }
+
+            public actor Obj3 {
+                public struct Obj4: Sendable {}
+            }
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
 }

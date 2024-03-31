@@ -373,4 +373,106 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
         XCTAssertEqual(result, expectedOutput)
     }
+
+    func testNestStruct() {
+        let source = """
+        public struct Obj {
+            public class Ojb2 {
+                public struct Class21 {
+                    public class Obj211 {}
+                }
+            }
+
+            public struct Obj3 {
+                public class Obj4 {}
+            }
+        }
+        """
+
+        let expectedOutput = """
+        public struct Obj {
+            public class Ojb2: @unchecked Sendable {
+                public struct Class21 {
+                    public class Obj211: @unchecked Sendable {}
+                }
+            }
+
+            public struct Obj3 {
+                public class Obj4: @unchecked Sendable {}
+            }
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testNestEnum() {
+        let source = """
+        public enum Obj {
+            public class Ojb2 {
+                public enum Class21 {
+                    public class Obj211 {}
+                }
+            }
+
+            public enum Obj3 {
+                public class Obj4 {}
+            }
+        }
+        """
+
+        let expectedOutput = """
+        public enum Obj {
+            public class Ojb2: @unchecked Sendable {
+                public enum Class21 {
+                    public class Obj211: @unchecked Sendable {}
+                }
+            }
+
+            public enum Obj3 {
+                public class Obj4: @unchecked Sendable {}
+            }
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testNestActor() {
+        let source = """
+        public actor Obj {
+            public class Ojb2 {
+                public actor Class21 {
+                    public class Obj211 {}
+                }
+            }
+
+            public actor Obj3 {
+                public class Obj4 {}
+            }
+        }
+        """
+
+        let expectedOutput = """
+        public actor Obj {
+            public class Ojb2: @unchecked Sendable {
+                public actor Class21 {
+                    public class Obj211: @unchecked Sendable {}
+                }
+            }
+
+            public actor Obj3 {
+                public class Obj4: @unchecked Sendable {}
+            }
+        }
+        """
+
+        let sourceSyntax = Parser.parse(source: source)
+        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        XCTAssertEqual(result, expectedOutput)
+    }
 }

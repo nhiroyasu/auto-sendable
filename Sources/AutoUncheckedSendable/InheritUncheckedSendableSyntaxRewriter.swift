@@ -5,29 +5,29 @@ class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
     override func visit(_ node: ClassDeclSyntax) -> DeclSyntax {
         return DeclSyntax(inheritUncheckedSendable(node))
     }
+    
+    override func visit(_ node: StructDeclSyntax) -> DeclSyntax {
+        return DeclSyntax(checkNestDecl(node))
+    }
+    
+    override func visit(_ node: EnumDeclSyntax) -> DeclSyntax {
+        return DeclSyntax(checkNestDecl(node))
+    }
 
+    override func visit(_ node: ActorDeclSyntax) -> DeclSyntax {
+        return DeclSyntax(checkNestDecl(node))
+    }
+    
     // MARK: - internal
-
+    
     private func inheritUncheckedSendable(_ decl: ClassDeclSyntax) -> ClassDeclSyntax {
-        let nestSendableMembers = decl.memberBlock.members.map {
-            if let classSyntax = $0.decl.as(ClassDeclSyntax.self) {
-                return MemberBlockItemListBuilder.buildExpression(inheritUncheckedSendable(classSyntax))
-            } else {
-                return MemberBlockItemListBuilder.buildExpression($0)
-            }
-        }
-        let nestSendableDecl = decl.with(
-            \.memberBlock.members,
-             MemberBlockItemListBuilder.buildFinalResult(
-                MemberBlockItemListBuilder.buildArray(nestSendableMembers)
-             )
-        )
+        let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritUncheckedSendable(for: decl.memberBlock.members))
         // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
-
+        
         guard isNotInheritedSendable(nestSendableDecl) else {
             return nestSendableDecl
         }
-
+        
         if let inheritanceClause = nestSendableDecl.inheritanceClause {
             let suffixInheritedTypes = arrangeTriviaForSendable(currentInheritedTypes: inheritanceClause.inheritedTypes)
             let sendableType = factoryUncheckedSendableSyntax(forwardSyntax: inheritanceClause.inheritedTypes.last)
@@ -53,6 +53,46 @@ class InheritUncheckedSendableSyntaxRewriter: SyntaxRewriter {
                 .with(\.name.trailingTrivia, [])
             return newSyntax
         }
+    }
+    
+    private func checkNestDecl(_ decl: StructDeclSyntax) -> StructDeclSyntax {
+        let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritUncheckedSendable(for: decl.memberBlock.members))
+        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+        
+        return nestSendableDecl
+    }
+    
+    private func checkNestDecl(_ decl: EnumDeclSyntax) -> EnumDeclSyntax {
+        let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritUncheckedSendable(for: decl.memberBlock.members))
+        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+        
+        return nestSendableDecl
+    }
+
+    private func checkNestDecl(_ decl: ActorDeclSyntax) -> ActorDeclSyntax {
+        let nestSendableDecl = decl.with(\.memberBlock.members, recursiveInheritUncheckedSendable(for: decl.memberBlock.members))
+        // NOTE: Please do not use decl from this point on. Use to `nestSendableDecl`
+        
+        return nestSendableDecl
+    }
+    
+    private func recursiveInheritUncheckedSendable(for memberBlockList: MemberBlockItemListSyntax) -> MemberBlockItemListSyntax {
+        let nestSendableMembers = memberBlockList.map {
+            if let structSyntax = $0.decl.as(StructDeclSyntax.self) {
+                return MemberBlockItemListBuilder.buildExpression(checkNestDecl(structSyntax))
+            } else if let enumSyntax = $0.decl.as(EnumDeclSyntax.self) {
+                return MemberBlockItemListBuilder.buildExpression(checkNestDecl(enumSyntax))
+            } else if let classSyntax = $0.decl.as(ClassDeclSyntax.self) {
+                return MemberBlockItemListBuilder.buildExpression(inheritUncheckedSendable(classSyntax))
+            } else if let actorSyntax = $0.decl.as(ActorDeclSyntax.self) {
+                return MemberBlockItemListBuilder.buildExpression(checkNestDecl(actorSyntax))
+            } else {
+                return MemberBlockItemListBuilder.buildExpression($0)
+            }
+        }
+        return MemberBlockItemListBuilder.buildFinalResult(
+           MemberBlockItemListBuilder.buildArray(nestSendableMembers)
+        )
     }
 
     private func isNotInheritedSendable(_ decl: ClassDeclSyntax) -> Bool {
