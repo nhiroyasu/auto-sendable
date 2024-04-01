@@ -10,7 +10,7 @@ class Main {
             return
         }
         let fileService = FileService()
-        let refactor = SwiftSendableRefactor()
+        let refactor = AutoSendableRefactor()
 
         let swiftFiles: Set<String> = CommandLine.arguments
             .dropFirst()

@@ -1,10 +1,8 @@
 @testable import AutoSendable
-import SwiftParser
-import SwiftSyntax
 import XCTest
 
-class InheritSendableSyntaxRewriterTests: XCTestCase {
-    private let subject = InheritSendableSyntaxRewriter(viewMode: .all)
+class AutoSendableRefactorTests: XCTestCase {
+    private let subject = AutoSendableRefactor()
 
     func testInheritSendable1() {
         let source = """
@@ -19,8 +17,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -37,8 +34,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -56,8 +52,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -77,8 +72,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -95,8 +89,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -113,8 +106,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -138,8 +130,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -158,8 +149,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -181,8 +171,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -229,8 +218,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -253,8 +241,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -277,8 +264,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -325,8 +311,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -349,8 +334,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -398,8 +382,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -416,8 +399,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -440,8 +422,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -458,8 +439,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -482,8 +462,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -506,8 +485,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -524,8 +502,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -558,8 +535,7 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -592,8 +568,28 @@ class InheritSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = subject.rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testNestExtension() {
+        let source = """
+        public struct Obj {}
+
+        public extension Obj {
+            public struct Ojb2: Codable, Equatable {}
+        }
+        """
+
+        let expectedOutput = """
+        public struct Obj: Sendable {}
+
+        public extension Obj {
+            public struct Ojb2: Codable, Equatable, Sendable {}
+        }
+        """
+
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 }

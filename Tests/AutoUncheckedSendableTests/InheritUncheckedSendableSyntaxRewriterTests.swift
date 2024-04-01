@@ -1,8 +1,9 @@
 @testable import AutoUncheckedSendable
-import SwiftParser
 import XCTest
 
 class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
+    let subject = AutoUncheckedSendableRefactor()
+
     func testInheritedUncheckSendable() {
         let source = """
         public class Obj {
@@ -14,8 +15,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -32,8 +32,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -48,8 +47,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -67,8 +65,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -88,8 +85,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -107,8 +103,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -125,8 +120,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -146,8 +140,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -169,8 +162,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -190,8 +182,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -208,8 +199,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -226,8 +216,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -250,8 +239,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -274,8 +262,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -322,8 +309,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -369,8 +355,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -403,8 +388,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -437,8 +421,7 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 
@@ -471,8 +454,28 @@ class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
         }
         """
 
-        let sourceSyntax = Parser.parse(source: source)
-        let result = InheritUncheckedSendableSyntaxRewriter(viewMode: .all).rewrite(sourceSyntax).description
+        let result = subject.exec(source: source)
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testNestExtension() {
+        let source = """
+        public class Obj {}
+
+        public extension Obj {
+            public class Ojb2: Codable, Equatable {}
+        }
+        """
+
+        let expectedOutput = """
+        public class Obj: @unchecked Sendable {}
+
+        public extension Obj {
+            public class Ojb2: Codable, Equatable, @unchecked Sendable {}
+        }
+        """
+
+        let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
 }
