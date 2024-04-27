@@ -1,7 +1,7 @@
 @testable import AutoUncheckedSendable
 import XCTest
 
-class InheritUncheckedSendableSyntaxRewriterTests: XCTestCase {
+class AutoUncheckedSendableRefactorTests: XCTestCase {
     let subject = AutoUncheckedSendableRefactor()
 
     func testInheritedUncheckSendable() {

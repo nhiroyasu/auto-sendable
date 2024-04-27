@@ -1,28 +1,32 @@
 import RewriterCore
 import SwiftSyntax
 
-class AutoSendableRewriterDelegate: InheritTypeSyntaxRewriterDelegate {
+class AddFinalModifierRewriterDelegate: AddModifierSyntaxRewriterDelegate {
     func decideContinuation(for declSyntax: ClassDeclSyntax) -> Bool {
-        true
+        isInheritedSendable(declSyntax)
     }
-
+    
     func decideContinuation(for declSyntax: StructDeclSyntax) -> Bool {
-        declSyntax.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) })
+        false
     }
-
+    
     func decideContinuation(for declSyntax: EnumDeclSyntax) -> Bool {
-        declSyntax.modifiers.contains(where: { $0.name.tokenKind == .keyword(.public) })
+        false
     }
-
+    
     func decideContinuation(for declSyntax: ActorDeclSyntax) -> Bool {
         false
     }
-
+    
     func decideContinuation(for declSyntax: ProtocolDeclSyntax) -> Bool {
-        true
-    }
-
-    func decideContinuation(for declSyntax: ExtensionDeclSyntax) -> Bool {
         false
+    }
+    
+    // MARK: - internal
+
+    private func isInheritedSendable(_ decl: ClassDeclSyntax) -> Bool {
+        decl.inheritanceClause?.inheritedTypes.contains {
+            $0.type.as(IdentifierTypeSyntax.self)?.name.text == "Sendable"
+        } ?? false
     }
 }

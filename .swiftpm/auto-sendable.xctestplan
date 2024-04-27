@@ -27,6 +27,13 @@
         "identifier" : "AutoSendableTests",
         "name" : "AutoSendableTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "AutoUncheckedSendableTests",
+        "name" : "AutoUncheckedSendableTests"
+      }
     }
   ],
   "version" : 1

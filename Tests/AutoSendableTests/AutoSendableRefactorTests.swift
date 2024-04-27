@@ -506,7 +506,104 @@ class AutoSendableRefactorTests: XCTestCase {
         XCTAssertEqual(result, expectedOutput)
     }
 
-    func testNestClass() {
+    func testInheritSendableForClass() {
+        let source = """
+        public class Obj {
+            public class Ojb2 {
+                class Ojb3 {}
+            }
+            class Ojb21 {}
+        }
+        """
+
+        let expectedOutput = """
+        public final class Obj: Sendable {
+            public final class Ojb2: Sendable {
+                final class Ojb3: Sendable {}
+            }
+            final class Ojb21: Sendable {}
+        }
+        """
+
+        let result = subject.exec(source: source)
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testInheritSendableFoClassWithLet() {
+        let source = """
+        public class Obj {
+            public let name: String
+        }
+        """
+
+        let expectedOutput = """
+        public final class Obj: Sendable {
+            public let name: String
+        }
+        """
+
+        let result = subject.exec(source: source)
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testInheritSendableForClassWithComputedProperties() {
+        let source = """
+        public class Obj {
+            public var name: String {
+                return "name"
+            }
+        }
+        """
+
+        let expectedOutput = """
+        public final class Obj: Sendable {
+            public var name: String {
+                return "name"
+            }
+        }
+        """
+
+        let result = subject.exec(source: source)
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testDontInheritSendableForClassWithVariables() {
+        let source = """
+        public class Obj {
+            public var name: String
+            public let age: Int
+        }
+        """
+
+        let expectedOutput = """
+        public class Obj: @unchecked Sendable {
+            public var name: String
+            public let age: Int
+        }
+        """
+
+        let result = subject.exec(source: source)
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testInheritSendableForProtocol() {
+        let source = """
+        public protocol Obj {
+            func test()
+        }
+        """
+
+        let expectedOutput = """
+        public protocol Obj: Sendable {
+            func test()
+        }
+        """
+
+        let result = subject.exec(source: source)
+        XCTAssertEqual(result, expectedOutput)
+    }
+
+    func testInheritSendableInNestClass() {
         let source = """
         public class Obj {
             public struct Ojb2 {
@@ -522,14 +619,14 @@ class AutoSendableRefactorTests: XCTestCase {
         """
 
         let expectedOutput = """
-        public class Obj {
+        public final class Obj: Sendable {
             public struct Ojb2: Sendable {
-                public class Class21 {
+                public final class Class21: Sendable {
                     public struct Obj211: Sendable {}
                 }
             }
 
-            public class Obj3 {
+            public final class Obj3: Sendable {
                 public struct Obj4: Sendable {}
             }
         }
@@ -543,7 +640,7 @@ class AutoSendableRefactorTests: XCTestCase {
         let source = """
         public actor Obj {
             public struct Ojb2 {
-                public actor Class21 {
+                public actor Actor21 {
                     public struct Obj211 {}
                 }
             }
@@ -557,7 +654,7 @@ class AutoSendableRefactorTests: XCTestCase {
         let expectedOutput = """
         public actor Obj {
             public struct Ojb2: Sendable {
-                public actor Class21 {
+                public actor Actor21 {
                     public struct Obj211: Sendable {}
                 }
             }
@@ -592,4 +689,6 @@ class AutoSendableRefactorTests: XCTestCase {
         let result = subject.exec(source: source)
         XCTAssertEqual(result, expectedOutput)
     }
+
+
 }
