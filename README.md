@@ -1,5 +1,5 @@
 # auto-sendable
-The refactoring tool ensures that protocols, structs, enums, and classes conform to the `Sendable` protocol.
+A refactoring tool that ensures protocols, structs, enums, and classes conform to the Sendable protocol.
 
 # Summary
 This tool modifies Swift code to conform to the `Sendable` protocol under the following conditions:
